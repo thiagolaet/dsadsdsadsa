@@ -3,7 +3,7 @@ class TaskBoard {
   late String name;
   int? color;
 
-  TaskBoard(this.name, {color = 0});
+  TaskBoard(this.name, {this.color = 0});
 
   TaskBoard.fromMap(Map map) {
     this.id = map["id"];

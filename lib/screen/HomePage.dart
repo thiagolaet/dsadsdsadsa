@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:planner/controller/TaskBoardController.dart';
 import 'package:planner/model/TaskBoard.dart';
+import 'TaskBoardDetailsPage.dart';
+import 'CreateTaskBoardPage.dart';
+
 
 class HomePage extends StatefulWidget {
   final VoidCallback signOut;
   HomePage(this.signOut);
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  _HomePageState createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
@@ -27,12 +30,6 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
- signOut() {
-   setState(() {
-     widget.signOut();
-   });
- }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,28 +37,51 @@ class _HomePageState extends State<HomePage> {
         title: Text("Home"),
         actions: <Widget>[
           IconButton(
-            onPressed: signOut,
+            onPressed: () {
+              widget.signOut();
+            },
             icon: Icon(Icons.lock_open),
           )
         ],
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => CreateTaskBoardPage()),
+          ).then((_) => {
+            _loadTaskBoards()
+          });
+        },
+        child: Icon(Icons.add),
+      ),
       body: ListView.builder(
         itemCount: _taskBoards.length,
         itemBuilder: (context, index) {
-          return FutureBuilder<int>(
-            future: _controller.countTasks(_taskBoards[index].id),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.done) {
-                return Card(
-                  child: ListTile(
-                    title: Text(_taskBoards[index].name),
-                    subtitle: Text('Número de tarefas: ${snapshot.data}'),
-                  ),
-                );
-              } else {
-                return CircularProgressIndicator();
-              }
+          return GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => TaskBoardDetailsPage(taskBoard: _taskBoards[index]),
+                ),
+              );
             },
+            child: Card(
+              child: ListTile(
+                title: Text(_taskBoards[index].name),
+                subtitle: FutureBuilder<int>(
+                  future: _controller.countTasks(_taskBoards[index].id),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.done) {
+                      return Text('Número de tarefas: ${snapshot.data}');
+                    } else {
+                      return CircularProgressIndicator();
+                    }
+                  },
+                ),
+              ),
+            ),
           );
         },
       ),
