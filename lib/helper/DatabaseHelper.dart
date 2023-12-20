@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
-
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'package:sqflite_common_ffi_web/sqflite_ffi_web.dart';
+
 class DatabaseHelper {
 
   static final DatabaseHelper _instance = DatabaseHelper.internal();
@@ -16,11 +19,15 @@ class DatabaseHelper {
   }
 
   Future<Database> initDb() async {
-    databaseFactory = databaseFactoryFfiWeb; // necessario pq uso chrome
+    if (Platform.isLinux) {
+      sqfliteFfiInit();
+      databaseFactory = databaseFactoryFfi;
+    } else {
+      databaseFactory = databaseFactoryFfiWeb; // necessario pq uso chrome
+    }
     final databasePath = await getDatabasesPath();
 
     final path = join(databasePath, "data.db");
-    
     Database db = await openDatabase(
       path,
       version: 1,
