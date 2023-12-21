@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:planner/model/Task.dart';
 import 'package:planner/controller/TaskController.dart';
 import 'package:planner/model/TaskBoard.dart';
+import 'package:intl/intl.dart';
 
 class CreateTaskPage extends StatefulWidget {
   final TaskBoard taskBoard;
@@ -37,7 +38,6 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
       });
     }
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,30 +46,56 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
       ),
       body: Form(
         key: _formKey,
-        child: Column(
-          children: <Widget>[
-            TextFormField(
-              decoration: InputDecoration(labelText: 'Nome da Tarefa'),
-              onSaved: (value) => _title = value!,
-              validator: (value) => value!.isEmpty ? 'Por favor, insira um nome' : null,
-            ),
-            TextFormField(
-              decoration: InputDecoration(labelText: 'Notas da Tarefa'),
-              onSaved: (value) => _note = value!,
-            ),
-            TextButton(
-              onPressed: () => _selectDate(context, true),
-              child: Text('Selecionar Data de Início'),
-            ),
-            TextButton(
-              onPressed: () => _selectDate(context, false),
-              child: Text('Selecionar Data Final'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                if (_formKey.currentState!.validate()) {
-                  _formKey.currentState!.save();
-                  Task newTask = Task(
+        child: SingleChildScrollView(  // Usado para evitar overflow quando o teclado aparece
+          padding: EdgeInsets.all(16.0),
+          child: Column(
+            children: <Widget>[
+              TextFormField(
+                decoration: InputDecoration(labelText: 'Nome da Tarefa'),
+                onSaved: (value) => _title = value!,
+                validator: (value) => value!.isEmpty ? 'Por favor, insira um nome' : null,
+              ),
+              TextFormField(
+                decoration: InputDecoration(labelText: 'Notas da Tarefa'),
+                onSaved: (value) => _note = value!,
+              ),
+              Row(
+                children: <Widget>[
+                  Expanded(
+                    child: TextButton(
+                      onPressed: () => _selectDate(context, true),
+                      child: Text('Selecionar Data de Início'),
+                    ),
+                  ),
+                  Expanded(
+                    child: Text(
+                      "${DateFormat('dd/MM/yyyy').format(_startDate)}".split(' ')[0],
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                children: <Widget>[
+                  Expanded(
+                    child: TextButton(
+                      onPressed: () => _selectDate(context, false),
+                      child: Text('Selecionar Data Final'),
+                    ),
+                  ),
+                  Expanded(
+                    child: Text(
+                      "${DateFormat('dd/MM/yyyy').format(_endDate)}".split(' ')[0],
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ],
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  if (_formKey.currentState!.validate()) {
+                    _formKey.currentState!.save();
+                    Task newTask = Task(
                     widget.userId,
                     widget.taskBoard.id ?? 0,
                     _title,
@@ -82,11 +108,12 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                   TaskController().saveTask(newTask).then((_) {
                     Navigator.pop(context);
                   });
-                }
-              },
-              child: Text('Salvar'),
-            ),
-          ],
+                  }
+                },
+                child: Text('Salvar'),
+              ),
+            ],
+          ),
         ),
       ),
     );
