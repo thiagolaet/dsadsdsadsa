@@ -22,23 +22,36 @@ class TaskController {
     return res;
   }
 
-Future<List<Task>> getRecentTasks(int userId) async {
-  var db = await con.db;
-  DateTime now = DateTime.now().subtract(Duration(days: 1));
+  Future<List<Task>> getRecentTasks(int userId) async {
+    var db = await con.db;
+    DateTime now = DateTime.now().subtract(Duration(days: 1));
 
-  DateTime sevenDaysLater = now.add(Duration(days: 8));
+    DateTime sevenDaysLater = now.add(Duration(days: 8));
 
-  var res = await db.query(
-    "task",
-    where: "user_id = ? AND startTime >= ? AND startTime <= ?",
-    whereArgs: [userId, now.toIso8601String(), sevenDaysLater.toIso8601String()],
-    orderBy: "startTime ASC"
-  );
+    var res = await db.query(
+      "task",
+      where: "user_id = ? AND startTime >= ? AND startTime <= ?",
+      whereArgs: [userId, now.toIso8601String(), sevenDaysLater.toIso8601String()],
+      orderBy: "startTime ASC"
+    );
 
-  List<Task> tasks = res.isNotEmpty ? res.map((c) => Task.fromMap(c)).toList() : [];
-  return tasks;
-}
+    List<Task> tasks = res.isNotEmpty ? res.map((c) => Task.fromMap(c)).toList() : [];
+    return tasks;
+  }
 
+  Future<List<Task>> getCompletedTasks(int userId) async {
+    var db = await con.db;
+
+    var res = await db.query(
+      "task",
+      where: "user_id = ? AND isCompleted = 1",
+      whereArgs: [userId],
+      orderBy: "startTime ASC"
+    );
+
+    List<Task> tasks = res.isNotEmpty ? res.map((c) => Task.fromMap(c)).toList() : [];
+    return tasks;
+  }
 
   Future<List<Task>> getTasksByBoardIdAndUserId(int? boardId, int? userId) async {
     var db = await con.db;

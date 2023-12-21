@@ -5,6 +5,7 @@ import 'TaskBoardDetailsPage.dart';
 import 'CreateTaskBoardPage.dart';
 import 'RecentTasksPage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'CompletedTasksPage.dart';
 
 
 class HomePage extends StatefulWidget {
@@ -47,11 +48,14 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: Text("Home"),
         actions: <Widget>[
-          IconButton(
+          ElevatedButton(
             onPressed: () {
-              widget.signOut();
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => CompletedTasksPage(userId: this.userId,)),
+              );
             },
-            icon: Icon(Icons.logout),
+            child: Text('Tarefas concluídas'),
           ),
           ElevatedButton(
             onPressed: () {
@@ -61,6 +65,12 @@ class _HomePageState extends State<HomePage> {
               );
             },
             child: Text('Tarefas recentes'),
+          ),
+          IconButton(
+            onPressed: () {
+              widget.signOut();
+            },
+            icon: Icon(Icons.logout),
           ),
         ],
       ),
