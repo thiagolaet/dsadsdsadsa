@@ -3,6 +3,7 @@ import 'package:planner/controller/TaskBoardController.dart';
 import 'package:planner/model/TaskBoard.dart';
 import 'TaskBoardDetailsPage.dart';
 import 'CreateTaskBoardPage.dart';
+import 'RecentTasksPage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 
@@ -50,8 +51,17 @@ class _HomePageState extends State<HomePage> {
             onPressed: () {
               widget.signOut();
             },
-            icon: Icon(Icons.lock_open),
-          )
+            icon: Icon(Icons.logout),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => RecentTasksPage(userId: this.userId,)),
+              );
+            },
+            child: Text('Tarefas recentes'),
+          ),
         ],
       ),
       floatingActionButton: FloatingActionButton(
