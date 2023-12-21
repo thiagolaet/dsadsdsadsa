@@ -9,6 +9,9 @@ class TaskController {
 
   Future<int> saveTask(Task task) async {
     var db = await con.db;
+    if (task.id != null) {
+      return await db.update('task', task.toMap(), where: 'id = ?', whereArgs: [task.id]);
+    }
     int res = await db.insert('task', task.toMap());
     return res;
   }

@@ -57,26 +57,34 @@ class _TaskBoardDetailsPageState extends State<TaskBoardDetailsPage> {
           : ListView.builder(
               itemCount: _tasks.length,
               itemBuilder: (context, index) {
-                return Card(
-                  child: ListTile(
-                    title: Text(_tasks[index].title),
-                    subtitle: Text('Status: ${_tasks[index].isCompleted == 1 ? 'Completa' : 'Incompleta'} | Data de Início: ${DateFormat('dd/MM/yyyy').format(DateTime.parse(_tasks[index].startTime ?? ''))} | Data de Fim: ${DateFormat('dd/MM/yyyy').format(DateTime.parse(_tasks[index].endTime ?? ''))}'),
-                    trailing: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        IconButton(
-                          icon: Icon(Icons.edit),
-                          onPressed: () {
-                            // Implementar a lógica de edição
-                          },
-                        ),
-                        IconButton(
-                          icon: Icon(Icons.delete),
-                          onPressed: () {
-                            _deleteTask(_tasks[index]);
-                          },
-                        ),
-                      ],
+                return GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      _tasks[index].isCompleted = _tasks[index].isCompleted == 1 ? 0 : 1;
+                      TaskController().saveTask(_tasks[index]);
+                    });
+                  },
+                  child: Card(
+                    child: ListTile(
+                      title: Text(_tasks[index].title),
+                      subtitle: Text('Status: ${_tasks[index].isCompleted == 1 ? 'Completa' : 'Incompleta'} | Data de Início: ${DateFormat('dd/MM/yyyy').format(DateTime.parse(_tasks[index].startTime ?? ''))} | Data de Fim: ${DateFormat('dd/MM/yyyy').format(DateTime.parse(_tasks[index].endTime ?? ''))}'),
+                      trailing: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          IconButton(
+                            icon: Icon(Icons.edit),
+                            onPressed: () {
+                              // Implementar a lógica de edição
+                            },
+                          ),
+                          IconButton(
+                            icon: Icon(Icons.delete),
+                            onPressed: () {
+                              _deleteTask(_tasks[index]);
+                            },
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 );
