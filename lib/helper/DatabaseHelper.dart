@@ -27,7 +27,7 @@ class DatabaseHelper {
     }
     final databasePath = await getDatabasesPath();
 
-    final path = join(databasePath, "data.db");
+    final path = join(databasePath, "data1.db");
     Database db = await openDatabase(
       path,
       version: 1,

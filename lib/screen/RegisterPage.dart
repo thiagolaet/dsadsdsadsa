@@ -41,7 +41,7 @@ class _RegisterPageState extends State<RegisterPage> {
       try{
         User user = await controller.registerUser(_name!, _email!, _password!);
         if (user.id != -1) {
-          savePref(1, user.name, user.email, user.password);
+          savePref(1, user.name, user.email, user.password, user.id ?? -1);
           _loginStatus = LoginStatus.signIn;
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -68,7 +68,7 @@ class _RegisterPageState extends State<RegisterPage> {
     });
   }
 
-  savePref(int value, String name, String email, String pass) async {
+  savePref(int value, String name, String email, String pass, int userId) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
 
     setState(() {
@@ -76,6 +76,7 @@ class _RegisterPageState extends State<RegisterPage> {
       preferences.setString("name", name);
       preferences.setString("email", email);
       preferences.setString("pass", pass);
+      preferences.setInt("userId", userId);
     });
   }
 

@@ -3,6 +3,7 @@ import 'package:planner/controller/TaskBoardController.dart';
 import 'package:planner/model/TaskBoard.dart';
 import 'TaskBoardDetailsPage.dart';
 import 'CreateTaskBoardPage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 
 class HomePage extends StatefulWidget {
@@ -16,11 +17,15 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   TaskBoardController _controller = TaskBoardController();
   List<TaskBoard> _taskBoards = [];
+  int userId = 0;
 
   @override
   void initState() {
     super.initState();
-    _loadTaskBoards();
+    _getUserId().then((value) => {
+      userId = value!,
+      _loadTaskBoards()
+    });
   }
 
   _loadTaskBoards() async {
@@ -28,6 +33,11 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       _taskBoards = taskBoards;
     });
+  }
+
+  _getUserId() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getInt('userId');
   }
 
   @override
@@ -63,7 +73,7 @@ class _HomePageState extends State<HomePage> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => TaskBoardDetailsPage(taskBoard: _taskBoards[index]),
+                  builder: (context) => TaskBoardDetailsPage(taskBoard: _taskBoards[index], userId: userId),
                 ),
               );
             },
@@ -71,7 +81,7 @@ class _HomePageState extends State<HomePage> {
               child: ListTile(
                 title: Text(_taskBoards[index].name),
                 subtitle: FutureBuilder<int>(
-                  future: _controller.countTasks(_taskBoards[index].id),
+                  future: _controller.countTasks(_taskBoards[index].id, this.userId),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.done) {
                       return Text('Número de tarefas: ${snapshot.data}');

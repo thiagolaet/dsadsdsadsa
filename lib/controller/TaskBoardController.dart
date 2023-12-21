@@ -27,9 +27,9 @@ class TaskBoardController {
     return list;
   }
 
-  Future<int> countTasks(int? boardId) async {
+  Future<int> countTasks(int? boardId, int? userId) async {
     var db = await con.db;
-    var res = await db.rawQuery('SELECT COUNT(*) FROM task WHERE board_id = ?', [boardId]);
+    var res = await db.rawQuery('SELECT COUNT(*) FROM task WHERE board_id = ? AND user_id = ?', [boardId, userId]);
     return Sqflite.firstIntValue(res) ?? 0;
   }
 }

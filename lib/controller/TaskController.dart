@@ -19,9 +19,9 @@ class TaskController {
     return res;
   }
 
-  Future<List<Task>> getTasksByBoardId(int? boardId) async {
+  Future<List<Task>> getTasksByBoardIdAndUserId(int? boardId, int? userId) async {
     var db = await con.db;
-    var res = await db.query("task", where: "board_id = ?", whereArgs: [boardId]);
+    var res = await db.query("task", where: "board_id = ? AND user_id = ?", whereArgs: [boardId, userId]);
 
     List<Task> list = res.isNotEmpty ? res.map((c) => Task.fromMap(c)).toList() : [];
     return list;

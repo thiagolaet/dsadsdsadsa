@@ -5,8 +5,9 @@ import 'package:planner/controller/TaskController.dart';
 
 class TaskBoardDetailsPage extends StatefulWidget {
   final TaskBoard taskBoard;
+  final int userId;
 
-  TaskBoardDetailsPage({required this.taskBoard});
+  TaskBoardDetailsPage({required this.taskBoard, required this.userId});
 
   @override
   _TaskBoardDetailsPageState createState() => _TaskBoardDetailsPageState();
@@ -23,10 +24,15 @@ class _TaskBoardDetailsPageState extends State<TaskBoardDetailsPage> {
   }
 
   _loadTasks() async {
-    _tasks = await TaskController().getTasksByBoardId(widget.taskBoard.id);
+    _tasks = await TaskController().getTasksByBoardIdAndUserId(widget.taskBoard.id, widget.userId);
     setState(() {
       _isLoading = false;
     });
+  }
+
+  _deleteTask(Task task) async {
+    await TaskController().deleteTask(task);
+    _loadTasks();
   }
 
   @override
@@ -56,7 +62,7 @@ class _TaskBoardDetailsPageState extends State<TaskBoardDetailsPage> {
                         IconButton(
                           icon: Icon(Icons.delete),
                           onPressed: () {
-                            // Implementar a lógica de deleção
+                            _deleteTask(_tasks[index]);
                           },
                         ),
                       ],

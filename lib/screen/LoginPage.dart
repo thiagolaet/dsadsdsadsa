@@ -35,7 +35,7 @@ class _LoginPageState extends State<LoginPage> {
       try {
         User user = await controller.getLogin(_email!, _password!);
         if (user.id != -1) {
-          savePref(1, user.name, user.email, user.password);
+          savePref(1, user.name, user.email, user.password, user.id ?? -1);
           _loginStatus = LoginStatus.signIn;
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -76,7 +76,7 @@ class _LoginPageState extends State<LoginPage> {
     });
   }
 
-  savePref(int value, String name, String email, String pass) async {
+  savePref(int value, String name, String email, String pass, int id) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
 
     setState(() {
@@ -84,6 +84,7 @@ class _LoginPageState extends State<LoginPage> {
       preferences.setString("name", name);
       preferences.setString("email", email);
       preferences.setString("pass", pass);
+      preferences.setInt("userId", id);
     });
   }
 
