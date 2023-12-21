@@ -137,7 +137,6 @@ class _LoginPageState extends State<LoginPage> {
                     onPressed: _submit,
                     child: Text("Login"),
                   ),
-                  // Registration button
                   ElevatedButton(
                     onPressed: _register,
                     child: Text("Register"),

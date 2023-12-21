@@ -23,7 +23,7 @@ class DatabaseHelper {
       sqfliteFfiInit();
       databaseFactory = databaseFactoryFfi;
     } else {
-      databaseFactory = databaseFactoryFfiWeb; // necessario pq uso chrome
+      databaseFactory = databaseFactoryFfiWeb;
     }
     final databasePath = await getDatabasesPath();
 

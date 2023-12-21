@@ -20,6 +20,13 @@ class _HomePageState extends State<HomePage> {
   TaskBoardController _controller = TaskBoardController();
   List<TaskBoard> _taskBoards = [];
   int userId = 0;
+  List<Color> colors = [
+    Colors.red,
+    Colors.blue,
+    Colors.green,
+    Colors.yellow,
+    Colors.purple,
+  ];
 
   @override
   void initState() {
@@ -100,6 +107,7 @@ class _HomePageState extends State<HomePage> {
               });
             },
             child: Card(
+              color: colors[(_taskBoards[index].color ?? 1 - 1) % colors.length],
               child: ListTile(
                 title: Text(_taskBoards[index].name),
                 subtitle: FutureBuilder<int>(
