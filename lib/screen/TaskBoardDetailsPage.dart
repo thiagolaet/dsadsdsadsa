@@ -74,8 +74,15 @@ class _TaskBoardDetailsPageState extends State<TaskBoardDetailsPage> {
                           IconButton(
                             icon: Icon(Icons.edit),
                             onPressed: () {
-                              // Implementar a lógica de edição
-                            },
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => CreateTaskPage(taskBoard: widget.taskBoard, userId: widget.userId, taskInitialData: _tasks[index]),
+                              ),
+                            ).then((_) => {
+                              _loadTasks()
+                            });
+                          },
                           ),
                           IconButton(
                             icon: Icon(Icons.delete),
