@@ -27,7 +27,7 @@ class DatabaseHelper {
     }
     final databasePath = await getDatabasesPath();
 
-    final path = join(databasePath, "data1.db");
+    final path = join(databasePath, "data2.db");
     Database db = await openDatabase(
       path,
       version: 1,
@@ -75,6 +75,7 @@ class DatabaseHelper {
 
             INSERT INTO task(user_id, board_id, title, note, date, startTime, endTime, isCompleted) VALUES(1, 1, 'Criar Projeto', 'Definir a estrutura do projeto indicando a linguagem de programação e dados necessários.', '2023-12-01', '2024-01-01', '2024-01-02', 0);
             INSERT INTO task(user_id, board_id, title, note, date, startTime, endTime, isCompleted) VALUES(1, 2, 'Comprar Frutas', 'Comprar maça, banana e abacaxi.', '2023-12-01', '2024-01-01', '2024-01-02', 0);
+            INSERT INTO task(user_id, board_id, title, note, date, startTime, endTime, isCompleted) VALUES(1, 2, 'Comprar tudo que tem que comprar', 'Comprar maça, banana e abacaxi.', '2023-12-01', '2024-01-01', '2024-01-02', 0);
             INSERT INTO task(user_id, board_id, title, note, date, startTime, endTime, isCompleted) VALUES(2, 3, 'Estudar P2 de Sistemas Operacionais', 'Fazer resumo de Gerência de Memória focando em Paginação.', '2023-12-01', '2024-01-01', '2024-01-02', 0);
             INSERT INTO task(user_id, board_id, title, note, date, startTime, endTime, isCompleted) VALUES(3, 4, 'Projeto Planner de Tarefas', 'Organizar tarefas com o grupo e definir a estrutura do projeto.', '2023-12-01', '2023-12-01', '2022-12-20', 0);
             INSERT INTO task(user_id, board_id, title, note, date, startTime, endTime, isCompleted) VALUES(3, 5, 'Correr no Campus da UFF', 'Alcançar a meta de 5KM.', '2023-12-01', '2024-01-01', '2024-01-02', 0);

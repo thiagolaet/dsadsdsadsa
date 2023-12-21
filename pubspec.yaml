@@ -16,9 +16,9 @@ dependencies:
   sqflite: ^2.2.0+2
   sqflite_common_ffi_web:
   path: ^1.8.2
-  shared_preferences: ^2.0.15  
-  english_words: ^4.0.0
+  shared_preferences: ^2.0.15
   provider: ^6.0.0
+  flutter_date_pickers: ^0.2.1
 
 dev_dependencies:
   flutter_test:

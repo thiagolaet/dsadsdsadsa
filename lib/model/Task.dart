@@ -27,9 +27,9 @@ class Task {
     this.title = map["title"];
     this.note = map["note"];
     this.date = map["date"];
-    this.startTime = map["start_time"];
-    this.endTime = map["end_time"];
-    this.isCompleted = map["is_completed"];
+    this.startTime = map["startTime"];
+    this.endTime = map["endTime"];
+    this.isCompleted = map["isCompleted"];
   }
 
   Map<String, dynamic> toMap() {
@@ -37,11 +37,11 @@ class Task {
       "user_id": this.userId,
       "board_id": this.boardId,
       "title": this.title,
-      "is_completed": this.isCompleted,
+      "isCompleted": this.isCompleted,
       "note": this.note,
       "date": this.date,
-      "start_time": this.startTime,
-      "end_time": this.endTime,
+      "startTime": this.startTime,
+      "endTime": this.endTime,
     };
 
     if (this.id != null) {

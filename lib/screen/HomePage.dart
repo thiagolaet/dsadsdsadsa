@@ -75,7 +75,9 @@ class _HomePageState extends State<HomePage> {
                 MaterialPageRoute(
                   builder: (context) => TaskBoardDetailsPage(taskBoard: _taskBoards[index], userId: userId),
                 ),
-              );
+              ).then((_) => {
+                _loadTaskBoards()
+              });
             },
             child: Card(
               child: ListTile(

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:planner/model/TaskBoard.dart';
 import 'package:planner/model/Task.dart';
 import 'package:planner/controller/TaskController.dart';
+import 'CreateTaskPage.dart';
+import 'package:intl/intl.dart';
 
 class TaskBoardDetailsPage extends StatefulWidget {
   final TaskBoard taskBoard;
@@ -41,6 +43,15 @@ class _TaskBoardDetailsPageState extends State<TaskBoardDetailsPage> {
       appBar: AppBar(
         title: Text(widget.taskBoard.name),
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => CreateTaskPage(taskBoard: widget.taskBoard, userId: widget.userId)),
+          ).then((value) => _loadTasks());
+        },
+        child: Icon(Icons.add),
+      ),
       body: _isLoading
           ? Center(child: CircularProgressIndicator())
           : ListView.builder(
@@ -49,7 +60,7 @@ class _TaskBoardDetailsPageState extends State<TaskBoardDetailsPage> {
                 return Card(
                   child: ListTile(
                     title: Text(_tasks[index].title),
-                    subtitle: Text('Status: ${_tasks[index].isCompleted == 1 ? 'Completa' : 'Incompleta'}'),
+                    subtitle: Text('Status: ${_tasks[index].isCompleted == 1 ? 'Completa' : 'Incompleta'} | Data de Início: ${DateFormat('dd/MM/yyyy').format(DateTime.parse(_tasks[index].startTime ?? ''))} | Data de Fim: ${DateFormat('dd/MM/yyyy').format(DateTime.parse(_tasks[index].endTime ?? ''))}'),
                     trailing: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
